@@ -1,0 +1,138 @@
+<!--
+  Generated template for the DetailFilmPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="Tirer pour rafraîchir"
+      refreshingSpinner="dots"
+      refreshingText="Chargement...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <ion-item>
+    <h2>Commande C-{{bill.id}}</h2>
+    <ion-icon name="close" item-end (click)="closeModal()"></ion-icon>
+  </ion-item>
+
+  <ion-card >
+    <ion-list>
+      <ion-item>
+        <ion-row>
+          <ion-col col-3>
+            Mode de paiement
+          </ion-col>
+          <ion-col col-9 text-right>
+            <strong>{{bill.payment_method}}</strong>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+      <ion-item>
+        <ion-row>
+          <ion-col col-3>
+            Statuts
+          </ion-col>
+          <ion-col col-9 text-right>
+            <strong>{{bill.status|billStatus}}</strong>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+      <ion-item>
+        <ion-row>
+          <ion-col col-3>
+            Code transaction
+          </ion-col>
+          <ion-col col-9 text-right>
+            <strong>{{bill.payment_code}}</strong>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+      <ion-item>
+        <ion-row>
+          <ion-col col-3>
+            Date
+          </ion-col>
+          <ion-col col-9 text-right>
+            {{bill.created_at}}
+          </ion-col>
+        </ion-row>
+      </ion-item>
+      <ion-item-divider color="primary">
+        <ion-row>
+          <ion-col col-8>
+            Produits
+          </ion-col>
+          <ion-col col-4 text-right>
+            {{bill.amount |priceFormat}} Fcfa
+          </ion-col>
+        </ion-row>
+      </ion-item-divider>
+      <ion-item>
+        <ion-row *ngFor="let i of bill.bill_products |orderBy:'-product.name'">
+          <ion-col col-8>
+            {{i.product.name}} ({{i.quantity}})
+          </ion-col>
+          <ion-col col-4 text-right>
+            {{i.retail_price*i.quantity | priceFormat}} Fcfa
+          </ion-col>
+        </ion-row>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+
+  <ion-card *ngIf="bill.deliveries.length>0">
+
+    <ion-list>
+      <ion-list-header>
+        Adresse de livraison
+      </ion-list-header>
+      <ion-item>
+        <ion-row>
+          <ion-col col-3>
+            Livraison express ?
+          </ion-col>
+          <ion-col col-9 text-right>
+            <strong *ngIf="bill.deliveries[0].is_express==1">Oui</strong>
+            <strong *ngIf="bill.deliveries[0].is_express==0">Non</strong>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+      <ion-item>
+        <ion-row>
+          <ion-col col-3>
+            Route
+          </ion-col>
+          <ion-col col-9 text-right>
+            <strong>{{bill.deliveries[0].road}}</strong>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+      <ion-item>
+        <ion-row>
+          <ion-col col-3>
+            Quartier
+          </ion-col>
+          <ion-col col-9 text-right>
+            <strong>{{bill.deliveries[0].district}}</strong>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+      <ion-item>
+        <ion-row>
+          <ion-col col-3>
+            Informations supplémentaires
+          </ion-col>
+          <ion-col col-12 text-right>
+            <strong>{{bill.deliveries[0].information}}</strong>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+</ion-content>
+<ion-footer text-right="">
+  <button ion-button class="buy" *ngIf="bill.status!='delivered'" (click)="delivered(id)">Livré</button>
+</ion-footer>

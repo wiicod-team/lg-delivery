@@ -1,17 +1,40 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>Home</ion-title>
+  <ion-navbar color="primary">
+    <ion-title>Commandess</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <h2>Welcome to Ionic!</h2>
-  <p>
-    This starter project comes with simple tabs-based layout for apps
-    that are going to primarily use a Tabbed UI.
-  </p>
-  <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs,
-    update any existing page or create new pages.
-  </p>
+<ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="Tirer pour rafraîchir"
+      refreshingSpinner="dots"
+      refreshingText="Chargement...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-segment [(ngModel)]="pet">
+    <ion-segment-button value="pending" (click)="billStatut('pending')">
+      Non livrées
+    </ion-segment-button>
+    <ion-segment-button value="paid" (click)="billStatut('paid')">
+      Livrées
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-card *ngFor="let item of bills" (click)="detailCommand(item.id)">
+    <ion-item [ngClass]="{'item-md-primary':item.deliveries[0].is_express==1}">
+      <h2>
+        <strong *ngIf="item.deliveries[0].is_express==0" style="color: #009d8b">C-{{item.id}}</strong>
+        <strong *ngIf="item.deliveries[0].is_express==1" style="color: #fff">C-{{item.id}}</strong>
+        <span style="float: right">{{item.amount|priceFormat}} Fcfa</span>
+      </h2>
+      <p>
+        <span *ngIf="item.deliveries[0].is_express==1">Express</span>
+        <span *ngIf="item.deliveries[0].is_express==0">Normale</span>
+        <span style="float: right;font-weight: bold;">{{item.status|billStatus}}</span>
+      </p>
+    </ion-item>
+  </ion-card>
 </ion-content>
