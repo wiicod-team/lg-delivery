@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 
-import { AboutPage } from '../about/about';
-import { ContactPage } from '../contact/contact';
 import { HomePage } from '../home/home';
 import {NavController} from "ionic-angular";
 import {ApiProvider} from "../../providers/api/api";
 import {AuthProvider} from "../../providers/auth/auth";
 import {Storage} from "@ionic/storage";
+import {PartnerPage} from "../partner/partner";
+import {LoginPage} from "../login/login";
 
 @Component({
   templateUrl: 'tabs.html'
@@ -14,8 +14,7 @@ import {Storage} from "@ionic/storage";
 export class TabsPage {
 
   tab1Root = HomePage;
-  tab2Root = AboutPage;
-  tab3Root = ContactPage;
+  tab2Root = PartnerPage;
 
   constructor(public navCtrl: NavController, private api:ApiProvider, private auth : AuthProvider, private storage : Storage) {
 
@@ -23,10 +22,7 @@ export class TabsPage {
 
   logout(){
     console.log("aze");
-    this.auth.logout().then(d=>{
-      this.api.doToast('Deconnecté',2000);
-      this.storage.set('user',undefined);
-      this.navCtrl.popAll();
-    })
+    this.storage.set('user',undefined);
+    this.navCtrl.push(LoginPage);
   }
 }

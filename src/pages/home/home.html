@@ -15,7 +15,10 @@
   </ion-refresher>
 
   <ion-segment [(ngModel)]="pet">
-    <ion-segment-button value="pending" (click)="billStatut('pending')">
+    <ion-segment-button value="pending_payment" (click)="billStatut('pending_payment')">
+      Non payées
+    </ion-segment-button>
+    <ion-segment-button value="pending" (click)="billStatut('pending_delivery')">
       Non livrées
     </ion-segment-button>
     <ion-segment-button value="paid" (click)="billStatut('paid')">

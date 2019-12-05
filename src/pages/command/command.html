@@ -73,7 +73,7 @@
       <ion-item>
         <ion-row *ngFor="let i of bill.bill_products |orderBy:'-product.name'">
           <ion-col col-8>
-            {{i.product.name}} ({{i.quantity}})
+            {{i.product.name | limitTo : 20}} ({{i.quantity}})
           </ion-col>
           <ion-col col-4 text-right>
             {{i.retail_price*i.quantity | priceFormat}} Fcfa
@@ -134,5 +134,6 @@
   </ion-card>
 </ion-content>
 <ion-footer text-right="">
-  <button ion-button class="buy" *ngIf="bill.status!='delivered'" (click)="delivered(id)">Livré</button>
+  <button ion-button class="buy" *ngIf="bill.status=='pending_payment'" (click)="confirmPaid(id)">Confirmer paiement</button>
+  <button ion-button class="buy" *ngIf="bill.status!='delivered' && bill.status!='pending_payment'" (click)="delivered(id)">Livrer</button>
 </ion-footer>

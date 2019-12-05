@@ -16,6 +16,7 @@ import {API_ENDPOINT} from "../services/contants";
 import {CommandPageModule} from "../pages/command/command.module";
 import {LoginPageModule} from "../pages/login/login.module";
 import {IonicStorageModule} from "@ionic/storage";
+import {PartnerPageModule} from "../pages/partner/partner.module";
 
 export function RestangularConfigFactory(RestangularProvider) {
   RestangularProvider
@@ -68,6 +69,7 @@ export function RestangularConfigFactory(RestangularProvider) {
     TabsPageModule,
     LoginPageModule,
     CommandPageModule,
+    PartnerPageModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
     RestangularModule.forRoot(RestangularConfigFactory),

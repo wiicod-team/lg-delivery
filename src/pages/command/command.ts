@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {ApiProvider} from "../../providers/api/api";
 
 /**
@@ -19,7 +19,7 @@ export class CommandPage {
   b:{body:{}};
   id=0;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private api : ApiProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private api : ApiProvider, public alertCtrl: AlertController) {
     this.getBill(this.navParams.get('id'));
   }
 
@@ -86,5 +86,45 @@ export class CommandPage {
     setTimeout(() => {
       refresher.complete();
     }, 700);
+  }
+
+  confirmPaid() {
+    const prompt = this.alertCtrl.create({
+      title: 'Confirmation',
+      inputs: [
+        {
+          name: 'code',
+          placeholder: 'Code secret'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Annuler',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Confirmer',
+          handler: data => {
+            console.log('Saved clicked');
+            if(data.code==696870700){
+              // @ts-ignore
+              this.b.id=this.b.body.id;
+              // @ts-ignore
+              this.b.status='pending_delivery';
+              // @ts-ignore
+              this.b.put().subscribe(da=>{
+                console.log("ok bill",);
+                // @ts-ignore
+                da.body.deliveries=this.b.body.deliveries;
+                this.bill=da.body;
+              })
+            }
+          }
+        }
+      ]
+    });
+    prompt.present();
   }
 }

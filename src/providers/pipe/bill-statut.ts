@@ -13,10 +13,10 @@ export class BillStatutPipe implements PipeTransform{
     {
       return "Echue";
     }
-    else if(value=='waiting_payment'){
+    else if(value=='pending_payment'){
       return "En attente de paiement";
     }
-    else if(value=='pending'){
+    else if(value=='pending_delivery'){
       return "En attente de livraison";
     }
     else if(value=='delivered'){

@@ -12,8 +12,9 @@ export class HomePage {
 
   bills=[];
   bill_paid=[];
+  bill_not_paid=[];
   bill_pending=[];
-  pet = 'pending';
+  pet = 'pending_delivery';
 
   constructor(public navCtrl: NavController, public modalCtrl: ModalController, private api : ApiProvider) {
     this.getBills();
@@ -25,18 +26,20 @@ export class HomePage {
   }
 
   getBills(){
-    this.api.Bills.getList({should_paginate:false,'_sort':'id', '_sortDir':'desc','_includes':'deliveries'}).subscribe(d=>{
+    this.api.Bills.getList({should_paginate:false,'_sort':'updated_at', '_sortDir':'desc','_includes':'deliveries'}).subscribe(d=>{
       d.forEach(function(v,k){
         if(v.deliveries.length<=0){
           v.deliveries=[{is_express:0}];
         }
       });
       // @ts-ignore
+      this.bill_not_paid=_.filter(d,{status:'pending_payment'});
+      // @ts-ignore
       this.bill_paid=_.filter(d,{status:'delivered'});
       // @ts-ignore
-      this.bill_pending=_.filter(d,{status:'pending'});
+      this.bill_pending=_.filter(d,{status:'pending_delivery'});
       this.bills=this.bill_pending;
-      console.log(d);
+      console.log("a",d);
     })
   }
 
@@ -49,11 +52,14 @@ export class HomePage {
   }
 
   billStatut(t){
-    if(t=='pending'){
+    if(t=='pending_delivery'){
       this.bills=this.bill_pending;
     }
-    else{
+    else if(t=='paid'){
       this.bills=this.bill_paid;
+    }
+    else if(t=='pending_payment'){
+      this.bills=this.bill_not_paid;
     }
   }
 }
