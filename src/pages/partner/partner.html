@@ -5,12 +5,20 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-  <ion-navbar>
-    <ion-title>Partnaires</ion-title>
+  <ion-navbar color="primary">
+    <ion-title>Partenaires</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="Tirer pour rafraîchir"
+      refreshingSpinner="dots"
+      refreshingText="Chargement...">
+    </ion-refresher-content>
+  </ion-refresher>
   <ion-card *ngFor="let item of partners">
     <ion-item>
       <h2>

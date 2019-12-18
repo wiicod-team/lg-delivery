@@ -60,6 +60,26 @@
           </ion-col>
         </ion-row>
       </ion-item>
+      <ion-item>
+        <ion-row>
+          <ion-col col-3>
+            Client
+          </ion-col>
+          <ion-col col-9 text-right>
+            {{bill.customer.name}}
+          </ion-col>
+        </ion-row>
+      </ion-item>
+      <ion-item>
+        <ion-row>
+          <ion-col col-3>
+            Téléphone
+          </ion-col>
+          <ion-col col-9 text-right>
+            {{bill.customer.phone |priceFormat}}
+          </ion-col>
+        </ion-row>
+      </ion-item>
       <ion-item-divider color="primary">
         <ion-row>
           <ion-col col-8>
@@ -86,9 +106,6 @@
   <ion-card *ngIf="bill.deliveries.length>0">
 
     <ion-list>
-      <ion-list-header>
-        Adresse de livraison
-      </ion-list-header>
       <ion-item>
         <ion-row>
           <ion-col col-3>
@@ -97,6 +114,16 @@
           <ion-col col-9 text-right>
             <strong *ngIf="bill.deliveries[0].is_express==1">Oui</strong>
             <strong *ngIf="bill.deliveries[0].is_express==0">Non</strong>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+      <ion-item>
+        <ion-row>
+          <ion-col col-3>
+            Date de livraison
+          </ion-col>
+          <ion-col col-9 text-right>
+            <strong>{{bill.deliveries[0].delivery_max_date}}</strong>
           </ion-col>
         </ion-row>
       </ion-item>

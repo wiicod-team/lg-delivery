@@ -3,6 +3,7 @@ import {ModalController, NavController} from 'ionic-angular';
 import {CommandPage} from "../command/command";
 import {ApiProvider} from "../../providers/api/api";
 import * as _ from 'lodash';
+import {LoadingProvider} from "../../providers/loading/loading";
 
 @Component({
   selector: 'page-home',
@@ -14,9 +15,9 @@ export class HomePage {
   bill_paid=[];
   bill_not_paid=[];
   bill_pending=[];
-  pet = 'pending_delivery';
+  pet = 'pending_payment';
 
-  constructor(public navCtrl: NavController, public modalCtrl: ModalController, private api : ApiProvider) {
+  constructor(public navCtrl: NavController, public modalCtrl: ModalController, private api : ApiProvider, private load : LoadingProvider) {
     this.getBills();
   }
 
@@ -26,6 +27,7 @@ export class HomePage {
   }
 
   getBills(){
+    this.load.show("des commandes");
     this.api.Bills.getList({should_paginate:false,'_sort':'updated_at', '_sortDir':'desc','_includes':'deliveries'}).subscribe(d=>{
       d.forEach(function(v,k){
         if(v.deliveries.length<=0){
@@ -38,8 +40,12 @@ export class HomePage {
       this.bill_paid=_.filter(d,{status:'delivered'});
       // @ts-ignore
       this.bill_pending=_.filter(d,{status:'pending_delivery'});
-      this.bills=this.bill_pending;
+      this.bills=this.bill_not_paid;
       console.log("a",d);
+      this.load.close();
+    },d=>{
+      this.load.close();
+      this.api.doToast("Erreur dans le chargement des données, merci d'actualiser la page",5000);
     })
   }
 

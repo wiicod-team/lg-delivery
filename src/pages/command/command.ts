@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
 import {ApiProvider} from "../../providers/api/api";
+import {LoadingProvider} from "../../providers/loading/loading";
 
 /**
  * Generated class for the CommandPage page.
@@ -15,11 +16,12 @@ import {ApiProvider} from "../../providers/api/api";
   templateUrl: 'command.html',
 })
 export class CommandPage {
-  bill={bill_products:[],deliveries:[{}]};
+  bill={bill_products:[],deliveries:[{}],customer:{}};
   b:{body:{}};
   id=0;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private api : ApiProvider, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private api : ApiProvider,
+              public alertCtrl: AlertController, private load : LoadingProvider) {
     this.getBill(this.navParams.get('id'));
   }
 
@@ -32,13 +34,18 @@ export class CommandPage {
   }
 
   getBill(id){
-    this.api.Bills.get(id,{_includes:'bill_products.product,deliveries'}).subscribe(d=>{
+    this.load.show("des informations");
+    this.api.Bills.get(id,{_includes:'bill_products.product,deliveries,customer'}).subscribe(d=>{
       console.log(d);
       if(d.body.deliveries==undefined){
         d.body.deliveries=[];
       }
       this.bill=d.body;
       this.b=d;
+      this.load.close();
+    },d=>{
+      this.load.close();
+      this.api.doToast("Erreur dans le chargement des données, merci d'actualiser la page",5000);
     })
   }
 
@@ -48,19 +55,24 @@ export class CommandPage {
       this.b.status='delivered';
       // @ts-ignore
       this.b.id=this.b.body.id;
+      this.load.show("");
       // @ts-ignore
       this.b.put().subscribe(da=>{
         console.log("ok bill");
         da.body.deliveries=[];
         this.bill=da.body;
-
+        this.load.close();
         this.api.doToast("Commande livrée",3000);
+      },d=>{
+        this.load.close();
+        this.api.doToast("Erreur dans le chargement des données, merci d'actualiser la page",5000);
       })
     }
     else{
       this.api.Deliveries.get(this.id).subscribe(d=>{
         d.id=d.body.id;
         d.status='delivered';
+        this.load.show("");
         d.put().subscribe(data=>{
           console.log("OK");
           this.api.doToast("Commande livrée. Merci de vous rapprocher de la boutique pour percevoir les frais de livraisons",3000);
@@ -73,7 +85,14 @@ export class CommandPage {
             console.log("ok bill");
             this.bill=da.body;
             this.bill.deliveries=data.body;
+            this.load.close();
+          },d=>{
+            this.load.close();
+            this.api.doToast("Erreur dans le chargement des données, merci d'actualiser la page",5000);
           })
+        },d=>{
+          this.load.close();
+          this.api.doToast("Erreur dans le chargement des données, merci d'actualiser la page",5000);
         })
       })
     }
@@ -94,6 +113,7 @@ export class CommandPage {
       inputs: [
         {
           name: 'code',
+          type: 'password',
           placeholder: 'Code secret'
         },
       ],
@@ -109,6 +129,7 @@ export class CommandPage {
           handler: data => {
             console.log('Saved clicked');
             if(data.code==696870700){
+              this.load.show("");
               // @ts-ignore
               this.b.id=this.b.body.id;
               // @ts-ignore
@@ -118,7 +139,13 @@ export class CommandPage {
                 console.log("ok bill",);
                 // @ts-ignore
                 da.body.deliveries=this.b.body.deliveries;
+                // @ts-ignore
+                da.body.customer=this.b.body.customer;
                 this.bill=da.body;
+                this.load.close();
+              },d=>{
+                this.load.close();
+                this.api.doToast("Erreur dans le chargement des données, merci d'actualiser la page",5000);
               })
             }
           }

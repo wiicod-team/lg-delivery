@@ -1,5 +1,7 @@
 {
   "name": "lg3-delivery",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "ionic-angular"
 }

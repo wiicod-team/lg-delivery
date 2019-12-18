@@ -43,7 +43,7 @@ export class LoginPage {
       this.api.doToast("Merci de remplir tous les champs",3000);
     }
     else{
-      this.load.show("Connexion");
+      this.load.show("");
       this.auth.login(this.user).then((rep)=>{
         console.log('authrep', rep);
         this.storage.set('user',rep).then(d=>{
