@@ -21,6 +21,7 @@
     "@angular/platform-browser": "5.2.11",
     "@angular/platform-browser-dynamic": "5.2.11",
     "@ionic-native/core": "~4.20.0",
+    "@ionic-native/firebase": "^5.20.0",
     "@ionic-native/splash-screen": "~4.20.0",
     "@ionic-native/status-bar": "~4.20.0",
     "@ionic/storage": "2.2.0",
@@ -41,8 +42,8 @@
   },
   "devDependencies": {
     "@ionic/app-scripts": "3.2.2",
+    "@types/lodash": "4.14.55",
     "core-js": "^2.6.3",
-    "@types/lodash": "^4.14.120",
     "typescript": "~2.6.2"
   },
   "description": "An Ionic project",
