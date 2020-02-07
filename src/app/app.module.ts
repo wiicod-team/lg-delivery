@@ -17,6 +17,8 @@ import {CommandPageModule} from "../pages/command/command.module";
 import {LoginPageModule} from "../pages/login/login.module";
 import {IonicStorageModule} from "@ionic/storage";
 import {PartnerPageModule} from "../pages/partner/partner.module";
+import {NotificationProvider} from "../providers/notification/notification";
+import {OneSignal} from "@ionic-native/onesignal";
 
 export function RestangularConfigFactory(RestangularProvider) {
   RestangularProvider
@@ -85,6 +87,8 @@ export function RestangularConfigFactory(RestangularProvider) {
     ApiProvider,
     AuthProvider,
     LoadingProvider,
+    OneSignal,
+    NotificationProvider,
   ]
 })
 export class AppModule {}

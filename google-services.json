@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "209007901137",
+    "firebase_url": "https://longrich-450dc.firebaseio.com",
+    "project_id": "longrich-450dc",
+    "storage_bucket": "longrich-450dc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:209007901137:android:05c24eabc3bb5c527088f0",
+        "android_client_info": {
+          "package_name": "ghost.longrich.delivery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "209007901137-75e6r73vvri0sk5mgfp3ku6fgke5e836.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ghost.longrich.delivery",
+            "certificate_hash": "88c3127c4e9b350d5efd1159d7be1acb903ce9eb"
+          }
+        },
+        {
+          "client_id": "209007901137-e7ahnkopoa9ole406bf8i6j840lo19al.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtpk7GjqHIrm7NwiZQ_I5HZnfc8wFTocI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "209007901137-e7ahnkopoa9ole406bf8i6j840lo19al.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
