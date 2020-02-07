@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ApiProvider} from "../api/api";
-
+import {NotificationProvider} from "../notification/notification";
+import * as _ from 'lodash';
 
 /*
   Generated class for the AuthProvider provider.
@@ -14,7 +15,7 @@ export class AuthProvider {
   public token: string;
   public token_key: string='jwt_token';
 
-  constructor(public api: ApiProvider) {
+  constructor(public api: ApiProvider,private notif: NotificationProvider) {
     console.log('Hello AuthProvider Provider');
     this.token = localStorage.getItem(this.token_key)
   }
@@ -32,7 +33,7 @@ export class AuthProvider {
           let data = response.body.data;
           localStorage.setItem(this.token_key,data.token);
           localStorage.setItem('user',data.user);
-          //this.save_token(data.user);
+          this.save_token(data.user);
           /*angular.forEach(data.userRole, function (value) {
             AclService.attachRole(value)
           });
@@ -121,5 +122,25 @@ export class AuthProvider {
       // AclService.setAbilities({});
     });
   }
+
+  save_token(user) {
+
+    return new Promise((resolve, reject) => {
+      this.notif.getDeviceToken().then((token) => {
+        if (Array.isArray(user.device_tokens)) {
+          if (_.indexOf(user.device_tokens, token) < 0)
+            user.device_tokens.push(token);
+        } else {
+          user.device_tokens = [token];
+        }
+        this.update_info(user);
+        resolve(user)
+      }).catch((err) => {
+        // reject(err);
+        console.log(err)});
+    });
+
+  }
+
 
 }
